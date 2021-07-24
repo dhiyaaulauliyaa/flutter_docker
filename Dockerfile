@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.10 as builder
 
 # Prerequisites
 RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-8-jdk wget
@@ -24,6 +24,12 @@ ENV PATH "$PATH:/home/developer/Android/sdk/platform-tools"
 # Download Flutter SDK
 RUN git clone https://github.com/flutter/flutter.git
 ENV PATH "$PATH:/home/developer/flutter/bin"
+
+# Add sdkmanager to path
+ENV PATH "$PATH:/home/developer/Android/sdk/tools/bin"
+
+# Install android toolchain
+RUN sdkmanager --install "cmdline-tools;latest"
 
 # Run basic check to download Dark SDK
 RUN flutter doctor
